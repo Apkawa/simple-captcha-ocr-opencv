@@ -69,18 +69,18 @@ def merge_bbox(bbox1, bbox2):
 
 def find_and_merge_intersection_bboxes(bboxes_list):
     new_bboxes_list = []
-    bboxes_list_for_merge = bboxes_list[:]
+    already_merged_bboxes = []
     for bbox1 in bboxes_list:
+
+        if bbox1 in already_merged_bboxes:
+            continue
+
         new_bbox = bbox1
-        for bbox2 in bboxes_list_for_merge:
+        for bbox2 in bboxes_list:
             intersect = intersect_bbox(new_bbox, bbox2)
-            if intersect:
-                print intersect, new_bbox, bbox2
-                print intersect.area()
+            if intersect and intersect.area() != intersect.aspectRatio():
                 new_bbox = merge_bbox(new_bbox, bbox2)
-                print new_bbox
-                print
-                bboxes_list_for_merge.remove(bbox2)
+                already_merged_bboxes.append(bbox2)
         new_bboxes_list.append(new_bbox)
     return new_bboxes_list
 
@@ -145,7 +145,7 @@ def save_char(image, char, output_dir):
     for i in xrange(1, 10000):
         save_filepath = os.path.join(save_dir, "{:0=5}_{}.png".format(i, char))
         if not os.path.exists(save_filepath):
-            cv2.imwrite(save_filepath, new_img)
+            cv2.imwrite(save_filepath, image)
             break
     return image
 
@@ -192,21 +192,4 @@ def main():
 
 
 if __name__ == '__main__':
-    print main()
-    # print intersect_bbox(
-    #     [0, 0, 5, 5],
-    #     [6, 0, 12, 5]
-    # )
-    # test_bbox = (1, 1, 384, 134)
-    # print bbox_to_polygon(*test_bbox)
-
-# [[[  1   1]]
-#
-#  [[  1 134]]
-#
-#  [[384 134]]
-#
-#  [[384   1]]]
-#
-#
-
+    main()
