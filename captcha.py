@@ -11,9 +11,9 @@ def get_captcha(text=None):
     font = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 110)
     text = text or get_str()
     size = font.getsize(text)
-    img = Image.new("RGB", size=(size[0] + 10, size[1] + 10), color="#FFF")
+    img = Image.new("RGB", size=(size[0] + 10, size[1] + 20), color="#FFF")
     draw = ImageDraw.Draw(img)
-    draw.text([5, 1], text, "#000", font=font)
+    draw.text([5, 10], text, "#000", font=font)
     return img
 
 

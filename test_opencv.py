@@ -91,9 +91,19 @@ def split_symbols(img):
     '''
     img = img.copy()
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(img_gray, 50, 255, 0)
 
     # thresh = cv2.adaptiveThreshold(img_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 7, 2)
+    img_gray = cv2.GaussianBlur(img_gray, (11, 11), 0)
+    cv2.imshow("0", img_gray)
+    ret, thresh = cv2.threshold(img_gray, 42, 255, 0)
+
+    cv2.imshow("1", thresh)
+
+    skel = skeletonization(img)
+
+    cv2.imshow("2", thresh)
+
+
 
     contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -180,7 +190,7 @@ def build_study_images():
 
 
 def main():
-    captcha.get_captcha(u"ХуйgiÄ").save('captcha.png')
+    captcha.get_captcha(u"ЙйgiÄWWW").save('captcha.png')
     img = cv2.imread('captcha.png')
     new_img, sub_images = split_symbols(img)
     cv2.imshow("all_img", new_img)
@@ -193,3 +203,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # while True:
+    #     build_study_images()
