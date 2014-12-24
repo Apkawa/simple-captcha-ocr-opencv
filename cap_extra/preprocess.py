@@ -23,7 +23,8 @@ from segment import shiftRect
 # IPL_BORDER_CONSTANT = 0
 # IPL_BORDER_REPLICATE = 1
 
-def repaintCCs(image, doRepaint=None, returnMask=False, resizeMask=True, doFillBackground=True, bgPoint=(0, 0), newcol=255, connectivity=4):
+def repaintCCs(image, doRepaint=None, returnMask=False, resizeMask=True, doFillBackground=True, bgPoint=(0, 0),
+               newcol=255, connectivity=4):
     if doRepaint is None:
         doRepaint = lambda comp, col: False
     resultMask = cv.CreateImage((image.width + 2, image.height + 2), image.depth, image.nChannels)
@@ -51,12 +52,15 @@ def repaintCCs(image, doRepaint=None, returnMask=False, resizeMask=True, doFillB
             cv.ResetImageROI(tempMask)
             cv.ResetImageROI(visitMask)
     if returnMask:
-        if resizeMask: return cap.getSubImage(resultMask, (1, 1, image.width, image.height))
-        else: return resultMask
-    else:    
+        if resizeMask:
+            return cap.getSubImage(resultMask, (1, 1, image.width, image.height))
+        else:
+            return resultMask
+    else:
         cv.SetImageROI(resultMask, (1, 1, image.width, image.height))
         cv.Set(image, newcol, resultMask)
         return image
+
 
 def smoothNoise1(image, bgcolor=255):
     temp = cv.CreateImage((image.width + 2, image.height + 2), image.depth, image.nChannels)
@@ -64,7 +68,7 @@ def smoothNoise1(image, bgcolor=255):
     cv.CopyMakeBorder(image, temp, (1, 1), 0, bgcolor)
     for x in xrange(1, image.width + 1):
         for y in xrange(1, image.height + 1):
-            if   temp[y + 1, x] == temp[y - 1, x] and temp[y, x] != temp[y + 1, x]:
+            if temp[y + 1, x] == temp[y - 1, x] and temp[y, x] != temp[y + 1, x]:
                 result[y - 1, x - 1] = temp[y + 1, x]
             elif temp[y, x + 1] == temp[y, x - 1] and temp[y, x] != temp[y, x + 1]:
                 result[y - 1, x - 1] = temp[y, x + 1]

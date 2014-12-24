@@ -20,12 +20,14 @@
 import cv
 from math import ceil, sin, cos, radians as rad
 
+
 def getSubImage(image, rect):
     region = cv.GetSubRect(image, rect)
     image = cv.CreateImage(cv.GetSize(region), image.depth, image.nChannels)
     cv.Copy(region, image, None)
     return image
-    
+
+
 def copyTo(src, dst, point, mask=None):
     if not (point[0] + src.width <= dst.width and point[1] + src.height <= dst.height):
         msg = "Source image is too large: %dx%d, maximum is %dx%d" % (src.width, src.height, \
@@ -38,10 +40,12 @@ def copyTo(src, dst, point, mask=None):
         raise
     cv.Copy(src, region, mask)
 
+
 def doResize(image, factor, method=cv.CV_INTER_CUBIC):
     result = cv.CreateImage((int(image.width * factor), int(image.height * factor)), image.depth, image.nChannels)
     cv.Resize(image, result, method)
     return result
+
 
 def doRotate(image, alpha, fillval=0, resize=True, interpolation=cv.CV_INTER_CUBIC):
     matrix = cv.CreateMat(2, 3, cv.CV_32FC1)
@@ -62,8 +66,10 @@ def doRotate(image, alpha, fillval=0, resize=True, interpolation=cv.CV_INTER_CUB
     cv.WarpAffine(image, result, matrix, interpolation + cv.CV_WARP_FILL_OUTLIERS, fillval)
     return result
 
+
 def roundXY(pt):
     return (cv.Round(pt[0]), cv.Round(pt[1]))
+
 
 def minAreaRectImage(image, returnPoints=True):
     points = []

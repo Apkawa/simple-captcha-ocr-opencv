@@ -22,10 +22,12 @@ from pyfann import libfann
 from cvext import copyTo
 from general import argmax
 
+
 def loadAnn(ann_file):
     ann = libfann.neural_net()
     ann.create_from_file(ann_file)
     return ann
+
 
 def flattenImage(image):
     lst = []
@@ -35,10 +37,12 @@ def flattenImage(image):
             lst.append(n)
     return lst
 
+
 def resizeNaive(image, size):
     result = cv.CreateImage(size, cv.IPL_DEPTH_8U, 1)
     cv.Resize(image, result, cv.CV_INTER_CUBIC)
     return result
+
 
 def resizeProp(image, (segW, segH)):
     result = cv.CreateImage((segW, segH), image.depth, image.nChannels)
@@ -63,6 +67,7 @@ def resizeProp(image, (segW, segH)):
         cv.ResetImageROI(result)
     return result
 
+
 def resizeFit(image, (segW, segH)):
     result = cv.CreateImage((segW, segH), image.depth, image.nChannels)
     cv.Zero(result)
@@ -86,9 +91,11 @@ def resizeFit(image, (segW, segH)):
             copyTo(image, result, (offW, offH), None)
     return result
 
+
 def recogniseChar(image, ann, charset):
     result = ann.run(flattenImage(image))
     return charset[argmax(result)]
+
 
 def defaultRecognise(segments, addr, extras, ann, size, charset, resizer):
     segments = map(lambda seg: resizer(seg, size), segments)

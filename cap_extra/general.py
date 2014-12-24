@@ -20,8 +20,11 @@
 from numpy import vectorize
 
 identity = lambda x: x
+
+
 def wrap(key):
     return identity if key is None else key
+
 
 def find(lst, val, key=None):
     key = wrap(key)
@@ -29,14 +32,16 @@ def find(lst, val, key=None):
         if key(lst[i]) == val:
             return i
     return None
-    
+
+
 def index(lst, key=None):
     key = wrap(key)
     for i in xrange(len(lst)):
         if key(lst[i]):
             return i
     return None
-    
+
+
 def argmin(lst, key=None):
     key = wrap(key)
     mi = 0
@@ -47,7 +52,8 @@ def argmin(lst, key=None):
             m = val
             mi = i
     return mi
-    
+
+
 def argmax(lst, key=None):
     key = wrap(key)
     mi = 0
@@ -58,6 +64,7 @@ def argmax(lst, key=None):
             m = val
             mi = i
     return mi
+
 
 def amap(func, array):
     vfunc = vectorize(func)
